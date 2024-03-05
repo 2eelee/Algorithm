@@ -3,50 +3,51 @@
 
 using namespace std;
 
-int main()
-{
+void updatePan(vector<char>& pan, int& index, int n, int s, char ch) {
+    index += s;
+    
+    if(index >= n) {
+        index %= n;
+    }
+    
+    if(pan[index] != '?' && pan[index] != ch) {
+        cout << "!";
+        exit(0);
+    }
+    
+    for(int j = 0; j < n; j++) {
+        if(pan[j] == ch) {
+            if(j == index) continue;
+            else {
+                cout << "!";
+                exit(0);
+            }
+        }
+    }
+    
+    pan[index] = ch;
+}
+
+int main() {
     int n, k;
     cin >> n >> k;
     
     vector<char> pan(n, '?');
     int index = 0;
     
-    for(int i=0; i<k; i++){ // 둘째 줄부터 각각 s와 알파벳을 k회 입력 
-        
+    for(int i = 0; i < k; i++) {
         int s;
         char ch;
         cin >> s >> ch;
         
-        index+=s;
-        
-        if(index>=n){       // index가 n을 넘어가지 않도록 조정 
-            index=index%n;
-        }
-        
-        if(pan[index]!='?'&&pan[index]!=ch){    // 
-            cout << "!";
-            return 0;
-        }
-        
-        for(int j=0; j<n; j++){
-            
-            if(pan[j]==ch){
-                
-                if(j==index) continue;
-                
-                else {
-                    cout << "!";
-                    return 0;
-                }
-            }
-        }
-        
-        pan[index] = ch;
+        updatePan(pan, index, n, s, ch);
     }
     
-    for(int i=0; i<n; i++){
+    for(int i = 0; i < n; i++) {
         cout << pan[index];
         index--;
-        if(index<0) index = n-1;
+        if(index < 0) index = n - 1;
     }
+    
+    return 0;
 }
