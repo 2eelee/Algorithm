@@ -22,9 +22,7 @@ int main()
     
     for(int i=3; i<=n; i++){
         
-        int a = max(tmp[i-1]+score[i], dp[i-2]+score[i]);
-        
-        dp[i] = a;
+        dp[i] = max(tmp[i-1], dp[i-2])+score[i];
         tmp[i] = dp[i-2]+score[i];
         
     }
