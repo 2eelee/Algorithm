@@ -3,9 +3,9 @@
 #include <vector>
 
 using namespace std;
-const int INF = 1000;
+const int INF = 1000; // 최대 V-1개의 간선을 지나게 됨 -> V * (가중치 최대값)
 
-void floydWarshall(int n, vector<vector<int>> &graph) {
+void floydWarshall(int n, vector<vector<int>> &graph) { // 플로이드 워셜
     
     for (int k = 1; k <= n; k++) { // 중간 정점
     
@@ -13,21 +13,21 @@ void floydWarshall(int n, vector<vector<int>> &graph) {
         
             for (int j = 1; j <= n; j++) { // 도착 정점
             
-                int cost = graph[i][k] + graph[k][j];
-                graph[i][j] = min(graph[i][j], cost);
+                int cost = graph[i][k] + graph[k][j];   
+                graph[i][j] = min(graph[i][j], cost);   // 새로구한 cost를 이용하여 graph[i][j]를 최소로 갱신
             }
         }
     }
 }
 
-bool checkStudent(int k, int n, vector<vector<int>> &graph){
+bool checkStudent(int k, int n, vector<vector<int>> &graph){        // k번 학생의 순서가 정해지는지의 여부를 판별하여 반환
     
     for (int i = 1; i <= n; i++) {
-        if (i != k && graph[k][i] == INF && graph[i][k] == INF) {
+        if (i != k && graph[k][i] == INF && graph[i][k] == INF) {   // 학생 k와 i 사이에 INF가 아닌 경로가 하나라도 존재하면 순서를 알 수 있는 학생으로 간주 (자기자신으로 향하는 노드도 제외)
             return false;
         }
     }
-    return true;
+    return true;    // 모든 i에 대해 위 조건이 해당하지 않는 경우 순서가 정해지는 경우이므로 true 반환. 
 }
 
 int main() {
@@ -36,28 +36,25 @@ int main() {
 
     cin >> n >> m;
     
-    vector<vector<int>> graph( n + 1, vector<int>(n + 1, INF) );
-    
-    for (int i = 1; i <= n; i++) {
-        graph[i][i] = 0;
-    }
+    vector<vector<int>> graph( n + 1, vector<int>(n + 1, INF) );    // 학생들 키의 관계정보를 저장하는 2차원 인접행렬 생성
     
     while (m--) {
-        cin >> a >> b;
-        graph[a][b] = 1;
+        cin >> a >> b;               
+        graph[a][b] = 1;                // a보다 b가 크다면 인접행렬의 해당 칸에 1 저장
     }
 
-    floydWarshall(n, graph);
+    floydWarshall(n, graph);            // 입력 정보를 이용하여 플로이드워셜 알고리즘 적용
     
     int cnt = 0;
     
     for(int i=1; i<=n; i++){
-        if(checkStudent(i, n, graph)){
-            cnt++;
+        if(checkStudent(i, n, graph)){  // i번 학생의 순서를 알 수 있다면
+            cnt++;                      // cnt를 증가시킴
         }
     }
     
-    cout << cnt;
+    cout << cnt;    // 몇 명의 순서를 알 수 있는지 출력
 
     return 0;
 }
+
