@@ -4,37 +4,26 @@
 
 using namespace std;
 
-int greedyMinTime(vector<int>& time, int n){
+int solution(vector<int>& p, int n){
+    sort(p.begin(), p.end());
     
-    int cumulated_time = 0, min_time = 0;
-    
-    sort(time.begin(), time.end());
-    
-    vector<int> wait_time(n,0);
-    
+    int ans = 0, prev = 0;
     for(int i=0; i<n; i++){
-        cumulated_time += time[i];
-        wait_time[i] = cumulated_time;
+        prev+=p[i];
+        ans+=prev;
     }
-    
-    for(int i=0; i<n; i++){
-        min_time +=wait_time[i];
-    }
-    
-    return min_time;
+    return ans;
 }
 
-int main()
-{
+int main(){
     int n;
     cin >> n;
     
-    vector<int> time(n,0);
+    vector<int> p(n,0);
     
     for(int i=0; i<n; i++){
-        cin >> time[i];
+        cin >> p[i];
     }
     
-    cout << greedyMinTime(time, n);
-    
+    cout << solution(p, n);
 }
